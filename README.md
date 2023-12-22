@@ -1,2 +1,2 @@
 # OmniSeg3D
- Segment Everything All at Once
+ Segment Everything in 3D All at Once

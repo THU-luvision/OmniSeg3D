@@ -1,0 +1,7 @@
+# ninja log v5
+0	21634	1698234808569053026	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/binding.o	c084fc0f4eb4bd46
+0	53830	1698234840775777109	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/intersection.o	652df7d16891d8b1
+0	54128	1698234841067765816	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/raymarching.o	675ebcaadb02b5d4
+1	58400	1698234845335601356	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/volumerendering_sam.o	9e29bd405bdd3521
+1	60069	1698234847007537204	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/volumerendering.o	44ed49020061d4d9
+0	63245	1698234850179415948	/data/yixuan/projects/ngp_sam/models/csrc/build/temp.linux-x86_64-cpython-310/losses.o	b2bb95f4c0407563

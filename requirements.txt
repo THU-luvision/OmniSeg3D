@@ -1,0 +1,8 @@
+
+imageio
+imageio-ffmpeg
+jupyter
+scipy
+pymcubes
+trimesh
+dearpygui

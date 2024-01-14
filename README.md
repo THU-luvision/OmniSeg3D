@@ -10,6 +10,9 @@ Towards Segment Everything in 3D All at Once.
 ![image](https://github.com/THU-luvision/OmniSeg3D/assets/37448328/65fc5798-23e0-4b20-b557-c5c23606a6c5)
 We propose an omniversal 3D segmentation method (a), which takes as input multi-view, inconsistent, class-agnostic 2D segmentations, and then outputs a consistent 3D feature field via a hierarchical contrastive learning framework. This method supports hierarchical segmentation (b), multi-object selection (c), and holistic discretization (d) in an interactive manner.
 
+#### Performance on Replica Room_0
+https://github.com/THU-luvision/OmniSeg3D/assets/37448328/f41a256a-e6dd-4f3e-9d59-2089406ac06d
+
 
 ## Update
 * **2024/01/14**: We release the original version of OmniSeg3D. Try and play with it now!
@@ -104,11 +107,10 @@ Here are some functional instructions for interactive segmentation in GUI:
    * Similarity Threshold: drag the pin of "ScoreThres", then the unselected regions will be darkened.
    * Binarization: left click the "binary threshold" button a binary mask will be applied to the RGB image via the chosen similarity threshold.
 
-#### Replica Room_0
-https://github.com/THU-luvision/OmniSeg3D/assets/37448328/f41a256a-e6dd-4f3e-9d59-2089406ac06d
 
-#### MipNeRF360 Counetr
-https://github.com/THU-luvision/OmniSeg3D/assets/37448328/056db2a9-dafc-42be-956e-09606a4e9ec5
+#### Performance on MipNeRF360 Counter
+https://github.com/THU-luvision/OmniSeg3D/assets/37448328/29c7b1db-5c34-4c24-b896-9d33b5e66ac3
+
 
 #### Comparison with [SA3D](https://github.com/Jumpat/SegmentAnythingin3D)
 https://github.com/THU-luvision/OmniSeg3D/assets/37448328/99e75832-24b7-4535-9f98-01efad3d33b5

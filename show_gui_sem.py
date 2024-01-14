@@ -67,7 +67,7 @@ class NGPGUI:
 
         self.cam = OrbitCamera(K, img_wh, r=radius)
         self.W, self.H = img_wh
-        self.render_buffer = np.ones((self.W*2, self.H*2, 3), dtype=np.float32)
+        self.render_buffer = np.ones((self.W, self.H, 3), dtype=np.float32)
 
         # placeholders
         self.dt = 0
@@ -85,7 +85,7 @@ class NGPGUI:
         self.pca_proj_mat = self.load_sam_mat(sem_results_path)
 
         self.register_dpg()
-    
+
 
     def load_sam_mat(self, root_path):
 
@@ -174,9 +174,10 @@ class NGPGUI:
                 sam_img = sam_img_raw / (sam_img_raw.norm(dim=-1, keepdim=True) + 1e-6)
                 sam_img = sam_img @ self.pca_proj_mat
 
+                # # --- opt1. for closed scene (like Replica) --- #
                 # sam_img = (sam_img - sam_img.min())/(sam_img.max() - sam_img.min())     # range: (0, 1)
                 sam_img = torch.clip(sam_img*0.5+0.5, 0, 1)
-                sam_img = rearrange(sam_img, "(h w) c -> h w c", h=self.H)
+                # sam_img = rearrange(sam_img, "(h w) c -> h w c", h=self.H)
             else:
                 sam_img = rgb.clone()
 
@@ -227,20 +228,12 @@ class NGPGUI:
 
 
 
+
+
         torch.cuda.synchronize()
         self.dt = time.time()-t
         self.mean_samples = results['total_samples']/len(rays_o)
 
-        if self.img_mode == 0:
-            # return rgb_score.cpu().numpy()
-            rgb = rgb.cpu().numpy()
-            rgb_score = rgb_score.cpu().numpy()
-            depth = depth2img(depth.cpu().numpy()).astype(np.float32)/255.0
-            depth_score = depth2img(depth_score.cpu().numpy()).astype(np.float32)/255.0
-            row_1 = np.concatenate([rgb, sam_img.cpu().numpy()], axis=1)
-            row_2 = np.concatenate([rgb_score, depth_score], axis=1)
-            return np.concatenate([row_1, row_2], axis=0)
-        
         if self.img_mode == 0:
             return rgb_score.cpu().numpy()
         elif self.img_mode == 1:
@@ -251,19 +244,19 @@ class NGPGUI:
 
     def register_dpg(self):
         dpg.create_context()
-        dpg.create_viewport(title="ngp_pl", width=self.W*2+200, height=self.H*2, resizable=False)
+        dpg.create_viewport(title="ngp_pl", width=self.W+200, height=self.H, resizable=False)
 
         ## register texture ##
         with dpg.texture_registry(show=False):
             dpg.add_raw_texture(
-                self.W*2,
-                self.H*2,
+                self.W,
+                self.H,
                 self.render_buffer,
                 format=dpg.mvFormat_Float_rgb,
                 tag="_texture")
 
         ## register window ##
-        with dpg.window(tag="_primary_window", width=self.W*2, height=self.H*2):
+        with dpg.window(tag="_primary_window", width=self.W, height=self.H):
             dpg.add_image("_texture")
         dpg.set_primary_window("_primary_window", True)
 
@@ -300,7 +293,7 @@ class NGPGUI:
             self.clear_edit = True
 
         ## control window ##
-        with dpg.window(label="Control", tag="_control_window", width=200, height=400, pos=(self.W*2, 0)):
+        with dpg.window(label="Control", tag="_control_window", width=200, height=400, pos=(self.W, 0)):
             dpg.add_slider_float(label="ScoreThres", default_value=0.0,
                                  min_value=0.0, max_value=1.0, tag="_ScoreThres")
             dpg.add_button(label="show depth", tag="_button_depth",

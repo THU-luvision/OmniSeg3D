@@ -1,5 +1,3 @@
-# --- borrowed from /media/luvision/E8AAE73BAAE704C2/Users/luvision/Downloads/windows-haiyang/ngp_pl_0216/PARF_backup_0601/ngp_pl_backup_0529_for_reproduce_Replica
-
 import torch
 import json
 import glob
@@ -13,22 +11,12 @@ from .color_utils import read_image, read_depth
 from .base import BaseDataset
 
 import imageio, cv2
-# from matplotlib import pyplot as plt
-# from einops import rearrange
-
 import scipy
 
 
 class MVSNetDataset(BaseDataset):
     def __init__(self, root_dir, split='train', downsample=1.0, **kwargs):
         super().__init__(root_dir, split, downsample)
-
-
-        # self.transform_fname = "transforms_plane.json"
-        # self.transform_fname = "transforms.json"
-        # if split == 'test' and self.demo_flag:
-        #     self.transform_fname = "transforms_plane_demo.json"
-
 
         self.read_intrinsics(downsample=downsample)
 
@@ -81,7 +69,6 @@ class MVSNetDataset(BaseDataset):
         if split == "test":
             step = 20
             idx_list = np.arange(3, imgs_num, step)
-            # idx_list = np.arange(0, imgs_num, step)
 
         self.n_images = idx_list.shape[0]
 

@@ -10,7 +10,6 @@ class BaseDataset(Dataset):
         self.root_dir = root_dir
         self.split = split
         self.downsample = downsample
-        # self.crop = True
 
     def read_intrinsics(self):
         raise NotImplementedError
@@ -37,22 +36,9 @@ class BaseDataset(Dataset):
 
             # randomly select pixels
             pix_idxs = np.random.choice(self.img_wh[0]*self.img_wh[1], self.batch_size, False)
-            # if self.crop is True:
-            #     # x:50:1870 y: 140:1000
-            #     cb = np.array([50, 1870, 140, 1000])    # crop boundary
-            #     xlen = cb[1] - cb[0]
-            #     ylen = cb[3] - cb[2]
-            #     x = np.arange(cb[0], cb[1])[np.random.choice(xlen, self.batch_size, True)]
-            #     y = np.arange(cb[2], cb[3])[np.random.choice(ylen, self.batch_size, True)]
-            #     pix_idxs = x + y*1920
-            #     # pix_idxs = y + x*ylen
-            # else:
-            #     pix_idxs = np.random.choice(self.img_wh[0]*self.img_wh[1], self.batch_size, False)
             rays = self.rays[img_idxs, pix_idxs]
             sample = {'img_idxs': img_idxs, 'pix_idxs': pix_idxs,
                       'rgb': rays[:, :3]}
-            # if self.rays.shape[-1] == 4: # HDR-NeRF data
-            #     sample['exposure'] = rays[:, 3:]
             if (self.rays.shape[-1] >= 4):
                 if 'depth' in self.mode.keys(): # depth data
                     sample['depth'] = rays[:, self.mode['depth']]

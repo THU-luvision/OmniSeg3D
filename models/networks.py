@@ -48,29 +48,6 @@ class NGP(nn.Module):
         b = np.exp(np.log(2048*scale/N_min)/(L-1))
         print(f'GridEncoding: Nmin={N_min} b={b:.5f} F={F} T=2^{log2_T} L={L}')
 
-
-        # self.xyz_encoder = \
-        #     tcnn.NetworkWithInputEncoding(
-        #         n_input_dims=3, n_output_dims=16,
-        #         encoding_config={
-        #             "otype": "Grid",
-	    #             "type": "Hash",
-        #             "n_levels": L,
-        #             "n_features_per_level": F,
-        #             "log2_hashmap_size": log2_T,
-        #             "base_resolution": N_min,
-        #             "per_level_scale": b,
-        #             "interpolation": "Linear"
-        #         },
-        #         network_config={
-        #             "otype": "FullyFusedMLP",
-        #             "activation": "ReLU",
-        #             "output_activation": "None",
-        #             "n_neurons": 64,
-        #             "n_hidden_layers": 1,
-        #         }
-        #     )
-
         self.xyz_encoder = tcnn.Encoding(
                 n_input_dims=3,
                 encoding_config={
@@ -118,17 +95,6 @@ class NGP(nn.Module):
             )
 
         if self.semantic_flag:
-            # self.sam_net = \
-            #     tcnn.Network(
-            #         n_input_dims=32, n_output_dims=self.semantic_dim,
-            #         network_config={
-            #             "otype": "FullyFusedMLP",
-            #             "activation": "ReLU",
-            #             "output_activation": "None",
-            #             "n_neurons": 64,
-            #             "n_hidden_layers": 2,
-            #         }
-            #     )
             
             self.sam_encode_net = \
                 tcnn.NetworkWithInputEncoding(
@@ -222,7 +188,6 @@ class NGP(nn.Module):
             rgbs: (N, 3)
         """
         sigmas, h = self.density(x, return_feat=True)
-        # sigmas, h, e = self.density(x, return_feat=True)
         d = d/torch.norm(d, dim=1, keepdim=True)
         d = self.dir_encoder((d+1)/2)
         rgbs = self.rgb_net(torch.cat([d, h], 1))
@@ -327,8 +292,6 @@ class NGP(nn.Module):
                 inside_aabb = ((xyzs_w.T>=self.aabb_min-self.aabb_tol)&
                                (xyzs_w.T<=self.aabb_max+self.aabb_tol)).all(1)
                 # a valid cell should be visible by at least one camera and not too close to any camera
-                # valid_mask = (count>0)&(~too_near_to_any_cam)
-                # valid_mask = (count>0)&inside_aabb
                 valid_mask = (count>0) & (~too_near_to_any_cam) & inside_aabb
                 self.density_grid[c, indices[i:i+chunk]] = \
                     torch.where(valid_mask, 0., -1.)

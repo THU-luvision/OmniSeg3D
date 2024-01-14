@@ -6,9 +6,7 @@ def get_opts():
     # dataset parameters
     parser.add_argument('--root_dir', type=str, required=True,
                         help='root directory of dataset')
-    parser.add_argument('--dataset_name', type=str, default='nsvf',
-                        choices=['nerf', 'nsvf', 'colmap', 'nerfpp', 'rtmv',
-                                 'dmnerf', 'replica', 'replica_small', 'mvsnet', 'pig', 'haoxiang'],
+    parser.add_argument('--dataset_name', type=str, default='colmap',
                         help='which dataset to train/test')
     parser.add_argument('--split', type=str, default='train',
                         choices=['train', 'trainval', 'trainvaltest'],
@@ -59,12 +57,6 @@ def get_opts():
     # experimental training options
     parser.add_argument('--optimize_ext', action='store_true', default=False,
                         help='whether to optimize extrinsics')
-    # parser.add_argument('--random_bg', action='store_true', default=False,
-    #                     help='''whether to train with random bg color (real scene only)
-    #                     to avoid objects with black color to be predicted as transparent
-    #                     ''')
-    # parser.add_argument('--white_bg', action='store_true', default=False,
-    #                     help='whether to train with white bg color (real scene only)')
     parser.add_argument('--bg_color', type=int, default=0,
                         help='background color option, 0: black, 1: white, 2: random')
     parser.add_argument('--semantic_only', action='store_true', default=False,
@@ -100,6 +92,8 @@ def get_opts():
                         help='dimension of semantic feature space')
     parser.add_argument('--patch_flag', action='store_true', default=False,
                         help='input patch segmentation image for clustering learning.')
+    parser.add_argument('--min_pixnum', type=int, default=2,
+                        help='minimum pixel number of a group to take part in contrastive clustering')
 
 
     return parser.parse_args()

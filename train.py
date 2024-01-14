@@ -21,8 +21,7 @@ from models.rendering import render, MAX_SAMPLES
 from apex.optimizers import FusedAdam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
-from losses_replica import NeRFLoss
-# from losses_twg import NeRFLoss
+from losses import NeRFLoss
 
 # metrics
 from torchmetrics import (
@@ -79,6 +78,7 @@ class NeRFSystem(LightningModule):
             'patch_flag':     self.hparams.patch_flag,
             'semantic_dim':   self.hparams.semantic_dim,
             'semantic_only':  self.hparams.semantic_only,
+            'min_pixnum':  self.hparams.min_pixnum,
         }
         self.loss = NeRFLoss(lambda_opacity    = self.hparams.opacity_loss_w,
                              lambda_distortion = self.hparams.distortion_loss_w,
@@ -334,20 +334,11 @@ class NeRFSystem(LightningModule):
 
                 sam_norm = results['semantic'] / (results['semantic'].norm(dim=1, keepdim=True) + 1e-6)
 
-                # sam_norm = results['semantic']
-                # ratio = results['semantic'][:, 5:].norm(dim=1).mean()
-                # sam_norm[:, 5:] /= ratio
-
-
                 sam_norm = sam_norm * 0.5 + 0.5
 
                 # --- PCA --- #
                 sam_img = pca(sam_norm, n_components=3)
                 sam_img = sam_img.cpu().numpy()
-
-                # # --- t-SNE --- #
-                # tsne = TSNE(n_components = 3)
-                # sam_img = tsne.fit_transform(sam_norm.cpu().numpy())
 
                 sam_img = rearrange(sam_img, '(h w) c -> h w c', h=h)
                 sam_img = (sam_img - sam_img.reshape(-1, 3).min(0))/ (sam_img.reshape(-1, 3).max(0) - sam_img.reshape(-1, 3).min(0))
@@ -358,11 +349,6 @@ class NeRFSystem(LightningModule):
                 np.save(os.path.join(self.val_subdir_sam, f'{idx:03d}.npy'), raw_sam_img.astype(np.float16))
                 xyz_img = rearrange(results['xyz'].cpu().numpy(), '(h w) c -> h w c', h=h)
                 np.save(os.path.join(self.val_subdir_xyz, f'{idx:03d}.npy'), xyz_img)
-
-                # # To plot the embedding
-                # import matplotlib.pyplot as plt
-                # %matplotlib inline
-                # plt.scatter(X_hat[:,0], X_hat[:,1], c = y, s = 0.5)
 
         return logs
 
@@ -433,13 +419,3 @@ if __name__ == '__main__':
                       save_poses=hparams.optimize_ext)
         torch.save(ckpt_, f'results/{hparams.dataset_name}/{hparams.exp_name}/ckpts/epoch={hparams.num_epochs-1}_slim.ckpt')
 
-    if (not hparams.no_save_test) and \
-       hparams.dataset_name=='nsvf' and \
-       'Synthetic' in hparams.root_dir: # save video
-        imgs = sorted(glob.glob(os.path.join(system.val_dir, '*.png')))
-        imageio.mimsave(os.path.join(system.val_dir, 'rgb.mp4'),
-                        [imageio.imread(img) for img in imgs[::2]],
-                        fps=30, macro_block_size=1)
-        imageio.mimsave(os.path.join(system.val_dir, 'depth.mp4'),
-                        [imageio.imread(img) for img in imgs[1::2]],
-                        fps=30, macro_block_size=1)

@@ -6,3 +6,4 @@ scipy
 pymcubes
 trimesh
 dearpygui
+tqdm

@@ -129,9 +129,7 @@ def __render_rays_test(model, rays_o, rays_d, hits_t, **kwargs):
                 hits_t[:, 0], alive_indices, kwargs.get('T_threshold', 1e-4),
                 N_eff_samples, opacity, depth, rgb)
             
-            # alive_indices[alive_indices_delay < 0] = -1
             alive_indices = alive_indices[alive_indices>=0] # remove converged rays
-            # alive_indices_delay = alive_indices.clone()
 
     results['opacity'] = opacity
     results['depth'] = depth
@@ -182,21 +180,6 @@ def __render_rays_train(model, rays_o, rays_d, hits_t, **kwargs):
     for k, v in kwargs.items(): # supply additional inputs, repeated per ray
         if isinstance(v, torch.Tensor):
             kwargs[k] = torch.repeat_interleave(v[rays_a[:, 0]], rays_a[:, 2], 0)
-
-
-    # if semantic_flag:
-    #     sigmas, rgbs, semantics = model(xyzs, dirs, **kwargs)
-        
-    #     (results['vr_samples'], results['opacity'],
-    #     results['depth'], results['rgb'], results['semantic'], results['ws']) = \
-    #         VolumeRenderer_sam.apply(sigmas, rgbs.contiguous(), semantics.contiguous(), results['deltas'], results['ts'], rays_a, kwargs.get('T_threshold', 1e-4), semantic_dim)
-    # else:
-    #     sigmas, rgbs = model(xyzs, dirs, **kwargs)
-    #     (results['vr_samples'], results['opacity'],
-    #     results['depth'], results['rgb'], results['ws']) = \
-    #         VolumeRenderer.apply(sigmas, rgbs.contiguous(), results['deltas'], results['ts'],
-    #                             rays_a, kwargs.get('T_threshold', 1e-4))
-
 
     if semantic_flag:
         sigmas, rgbs, semantics = model(xyzs, dirs, **kwargs)

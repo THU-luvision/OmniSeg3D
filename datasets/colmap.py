@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import os
+from os.path import dirname, basename, join
 import glob
 from tqdm import tqdm
 from cv2 import resize, INTER_AREA, INTER_NEAREST
@@ -31,6 +32,8 @@ class ColmapDataset(BaseDataset):
             self.mode = {'rgb':[0,1,2], 'depth':[3]}
         elif self.semantic_flag:
             self.mode = {'rgb':[0,1,2], 'sam':[3]}
+            self.sam_folder = glob.glob(join(self.root_dir, "sam*"))[0]
+            print("DATA_LOADER: load sam files from: ", self.sam_folder)
 
         if kwargs.get('read_meta', True):
             self.read_meta(split, **kwargs)
@@ -114,12 +117,12 @@ class ColmapDataset(BaseDataset):
             if split=='train':
                 img_paths.pop(test_idx)
                 self.poses = np.delete(self.poses, test_idx, 0)
-        elif 'Multiview-Segmentation-Data' in self.root_dir: # SPIn-NeRF data
-            # use all images for training
-            pass
-        elif '360' in self.root_dir: # 360 data
-            # use all images for training
-            pass
+        # elif 'Multiview-Segmentation-Data' in self.root_dir: # SPIn-NeRF data
+        #     # use all images for training
+        #     pass
+        # elif '360' in self.root_dir: # 360 data
+        #     # use all images for training
+        #     pass
         else:
             # use every 8th image as test set
             if split=='train':
@@ -143,7 +146,9 @@ class ColmapDataset(BaseDataset):
                 buf.append(torch.FloatTensor(depth.reshape(-1, 1)))
 
             if self.semantic_flag:
-                sam = np.load(img_path.replace('images_', 'sam_')[:-3] + 'npz')
+                # sam = np.load(img_path.replace('images_', 'sam_')[:-3] + 'npz')
+                # sam = np.load(join(dirname(dirname(img_path)), 'sam', basename(img_path).split('.')[0]+'.npz'))
+                sam = np.load(join(self.sam_folder, basename(img_path).split('.')[0]+'.npz'))
                 indices = resize(sam['indices'], self.img_wh, interpolation=INTER_NEAREST)
                 buf.append(torch.FloatTensor(indices.reshape(-1, 1)))
                 self.patchmaps.append(sam['correlation'])

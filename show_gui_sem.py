@@ -244,7 +244,7 @@ class NGPGUI:
 
     def register_dpg(self):
         dpg.create_context()
-        dpg.create_viewport(title="ngp_pl", width=self.W+200, height=self.H, resizable=False)
+        dpg.create_viewport(title="OmniSeg3D", width=self.W+200, height=self.H, resizable=False)
 
         ## register texture ##
         with dpg.texture_registry(show=False):

@@ -20,7 +20,7 @@ For more demos, please visit our project page: [OmniSeg3D](https://oceanying.git
 
 ## Installation
 
-NOTE: Our project is implemented based on the ngp_pl project and the requirements are the same as ngp_pl basically.
+NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea123/ngp_pl) project and the requirements are the same as ngp_pl basically.
 
 ### Hardware
 
@@ -68,12 +68,12 @@ The standard data structure of OmniSeg3D should look like:
    * (optional) other cunstomized folders for poses, depth
 
 ### Data Sample
-We provide some data sample (replica_room_0, 360_counter, llff_flower), you can download them from this [link](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing).
+We provide some [data sample (replica_room_0, 360_counter, llff_flower)](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing), you can download them for model trainning.
 
 
 ## Training
 
-We recommand two-stage training strategy for stable convergence, which means we train for **color and density field** first and then for **semantic field**. 
+We recommend a two-stage training strategy for stable convergence, which means we train for **color and density field** first and then for **semantic field**. 
 
 * Stage1: color and density field optimization
 ```bash
@@ -110,6 +110,9 @@ Here are some functional instructions for interactive segmentation in GUI:
    * Multi-click mode: choose "multi-clickmode" button, then you can select multiple pixels on the screen by right click them.
    * Similarity Threshold: drag the pin of "ScoreThres", then the unselected regions will be darkened.
    * Binarization: left click the "binary threshold" button a binary mask will be applied to the RGB image via the chosen similarity threshold.
+
+#### Trained Models
+We provide [trained model for replica room_0](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing), you can use it for GUI visulization and interactive segmentation. This sample also reveals the output organization. It is recommended to put the unzipped "results" folder under the root_dir of OmniSeg3D for minimum code modification.
 
 
 #### Performance on MipNeRF360 Counter

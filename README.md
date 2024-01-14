@@ -57,7 +57,7 @@ python run_sam.py --ckpt_path {SAM_CKPT_PATH} --file_path {IMAGE_FOLDER} --gpu_i
 ```
 After running, you will get three folder "sam", "masks", "patches". "sam" stores the hierarchical representation as ".npz" files. "masks" and "patches" are used for visualization or masks quaility evaluation, which won't be used during training. Ideal "masks" should include object-level masks and "patches" should contain part-level masks. We basically use the default parameter setting for SAM, but you can tune the parameters for customized datasets.
 
-The data structure should looks like:
+The standard data structure of OmniSeg3D should look like:
 * Scene_name
    * image_folder
    * sam_folder
@@ -66,6 +66,7 @@ The data structure should looks like:
    * (optional) COLMAP_sparse_folder
    * (optional) other cunstomized folders for poses, depth
 
+We provide some data sample (replica_room_0, 360_counter, llff_flower), you can download them from this [link](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing).
 
 
 ## Training

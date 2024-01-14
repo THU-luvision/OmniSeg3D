@@ -13,6 +13,7 @@ We propose an omniversal 3D segmentation method (a), which takes as input multi-
 #### Performance on Replica Room_0
 https://github.com/THU-luvision/OmniSeg3D/assets/37448328/f41a256a-e6dd-4f3e-9d59-2089406ac06d
 
+For more demos, please visit our project page: [OmniSeg3D](https://oceanying.github.io/OmniSeg3D/).
 
 ## Update
 * **2024/01/14**: We release the original version of OmniSeg3D. Try and play with it now!

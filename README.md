@@ -18,6 +18,7 @@ For more demos, please visit our project page: [OmniSeg3D](https://oceanying.git
 ## Update
 * **2024/01/14**: We release the original version of OmniSeg3D. Try and play with it now!
 
+
 ## Installation
 
 NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea123/ngp_pl) project and the requirements are the same as ngp_pl basically.
@@ -29,29 +30,28 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 
 ### Software
 
-* Clone this repo by:
+1. Clone this repo by:
 	```bash
 	git clone https://github.com/THU-luvision/OmniSeg3D.git
  	```
-* Create a conda environment and activate it, Python>=3.8 (installation via [anaconda](https://www.anaconda.com/distribution/) is recommended.
+2.  Create a conda environment and activate it, Python>=3.8 (installation via [anaconda](https://www.anaconda.com/distribution/) is recommended.
 	```bash
 	conda create -n omniseg3d python=3.8
 	conda activate omniseg3d
 	```
-* Python libraries
-    * Install `pytorch`, `pytorch-lightning=1.9.3`, [`pytorch-scatter`](https://github.com/rusty1s/pytorch_scatter#installation)
+3. `pytorch`, `pytorch-lightning=1.9.3`, [`pytorch-scatter`](https://github.com/rusty1s/pytorch_scatter#installation)
 	```bash
 	conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch
 	conda install pytorch-lightning=1.9.3
 	conda install pytorch-scatter -c pyg
 	```
-    * Install `tinycudann` following the official [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
+4. `tinycudann`: following the official [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
 	```bash
 	git clone --recursive https://github.com/nvlabs/tiny-cuda-nn
 	cd tiny-cuda-nn/bindings/torch
 	python setup.py install
 	```
-    * Install `apex` following the official [instruction](https://github.com/NVIDIA/apex#linux). NOTE: [Error](https://github.com/NVIDIA/apex/issues/1735) may occur due to the recent official commit, try `git checkout 2386a912164b0c5cfcd8be7a2b890fbac5607c82` to resolve the problem.
+5. `apex`: following the official [instruction](https://github.com/NVIDIA/apex#linux). NOTE: [Error](https://github.com/NVIDIA/apex/issues/1735) may occur due to the recent official commit, try `git checkout 2386a912164b0c5cfcd8be7a2b890fbac5607c82` to resolve the problem.
 	```bash
 	git clone https://github.com/NVIDIA/apex
 	cd apex
@@ -60,7 +60,7 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 	# otherwise
 	pip install -v --disable-pip-version-check --no-cache-dir --no-build-isolation --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 	```
-    * Install SAM for segmentation 
+6. `SAM` for segmentation:
 	```bash
 	git clone https://github.com/facebookresearch/segment-anything.git
 	cd segment-anything
@@ -68,12 +68,12 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 	mkdir sam_ckpt; cd sam_ckpt
 	wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
 	```
-    * Install core requirements by:
+7. Other python requirements:
 	```bash
-	pip install -r requirements.txt`
+	pip install -r requirements.txt
 	```
 
-* Cuda extension: Upgrade `pip` to >= 22.1 and run:
+8. Cuda Extension: Upgrade `pip` to >= 22.1 and run:
 	```bash
 	pip install models/csrc/
  	```
@@ -84,20 +84,36 @@ you should firstly run the sam model to get the hierarchical representation file
 ```bash
 python run_sam.py --ckpt_path {SAM_CKPT_PATH} --file_path {IMAGE_FOLDER} --gpu_id {GPU_ID}
 ```
-After running, you will get three folder "sam", "masks", "patches". "sam" stores the hierarchical representation as ".npz" files. "masks" and "patches" are used for visualization or masks quaility evaluation, which won't be used during training. Ideal "masks" should include object-level masks and "patches" should contain part-level masks. We basically use the default parameter setting for SAM, but you can tune the parameters for customized datasets.
+After running, you will get three folders "sam", "masks", "patches":
+* "sam": stores the hierarchical representation as ".npz" files
+* "masks" and "patches": used for visualization or masks quaility evaluation, which won't be used during training.
 
-### Data Structure
-The standard data structure of OmniSeg3D should look like:
-* Scene_name
-   * image_folder
-   * sam_folder
-   * masks_folder
-   * patches_folder
-   * (optional) COLMAP_sparse_folder
-   * (optional) other cunstomized folders for poses, depth
+Ideal "masks" should include object-level masks and "patches" should contain part-level masks. We basically use the default parameter setting for SAM, but you can tune the parameters for customized datasets.
 
 ### Data Sample
 We provide some [data sample (replica_room_0, 360_counter, llff_flower)](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing), you can download them for model trainning.
+
+### Data structure:  
+NOTE: Folder "sam", "masks", and "patches" should be generated with run_sam.py
+```
+    data
+    ├── 360_v2             	# Link: https://jonbarron.info/mipnerf360/
+    │   └── [bicycle|bonsai|counter|garden|kitchen|room|stump]
+    │       ├── [sparse/0] (colmap results)
+    │       └── [images|images_2|images_4|images_8|sam|masks|patches]
+    │
+    ├── nerf_llff_data     	# Link: https://drive.google.com/drive/folders/14boI-o5hGO9srnWaaogTU5_ji7wkX2S7
+    │   └── [fern|flower|fortress|horns|leaves|orchids|room|trex]
+    │       ├── [sparse/0] (colmap results)
+    │       └── [images|images_2|images_4|images_8]
+    │
+    └── replica_data		# Link: https://github.com/ToniRV/NeRF-SLAM/blob/master/scripts/download_replica.bash
+        └── [office_0|room_0|...]
+            ├── transforms_train.json
+            └── [rgb|depth(optional)|sam|masks|patches]
+```
+
+
 
 
 ## Training
@@ -134,11 +150,11 @@ CUDA_VISIBLE_DEVICES=0 opt=show_sem bash scripts/run_replica.sh
 
 Here are some functional instructions for interactive segmentation in GUI:
 * The view point can be changed by dragging the mouse on the screen
-* Left click "clickmode" button to start segmentation mode:
-   * Single-click mode: right click the region of interest, the object or part will be highlighted, and the score map will show the similarity between the selected pixel and other rendered pixels.
-   * Multi-click mode: choose "multi-clickmode" button, then you can select multiple pixels on the screen by right click them.
-   * Similarity Threshold: drag the pin of "ScoreThres", then the unselected regions will be darkened.
-   * Binarization: left click the "binary threshold" button a binary mask will be applied to the RGB image via the chosen similarity threshold.
+* Left click `clickmode` button to start segmentation mode:
+   * `Single-click mode`: right click the region of interest, the object or part will be highlighted, and the score map will show the similarity between the selected pixel and other rendered pixels.
+   * `Multi-click mode`: choose `multi-clickmode` button, then you can select multiple pixels on the screen by right click them.
+   * `Similarity Threshold`: drag the pin of `ScoreThres`, then the unselected regions will be darkened.
+   * `Binarization`: left click the `binary threshold` button a binary mask will be applied to the RGB image via the chosen similarity threshold.
 
 #### Trained Models
 We provide [trained model for replica room_0](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing), you can use it for GUI visulization and interactive segmentation. This sample also reveals the output organization. It is recommended to put the unzipped "results" folder under the root_dir of OmniSeg3D for minimum code modification.

@@ -6,9 +6,8 @@
 <sup>1</sup>Tsinghua Univeristy &emsp; <sup>2</sup>Alibaba Group.  
 
 
-Towards Segment Everything in 3D All at Once. 
 ![image](https://github.com/THU-luvision/OmniSeg3D/assets/37448328/65fc5798-23e0-4b20-b557-c5c23606a6c5)
-We propose an omniversal 3D segmentation method (a), which takes as input multi-view, inconsistent, class-agnostic 2D segmentations, and then outputs a consistent 3D feature field via a hierarchical contrastive learning framework. This method supports hierarchical segmentation (b), multi-object selection (c), and holistic discretization (d) in an interactive manner.
+Towards segmenting everything in 3D all at once, we propose an omniversal 3D segmentation method (a), which takes as input multi-view, inconsistent, class-agnostic 2D segmentations, and then outputs a consistent 3D feature field via a hierarchical contrastive learning framework. This method supports hierarchical segmentation (b), multi-object selection (c), and holistic discretization (d) in an interactive manner.
 
 #### Performance on Replica Room_0
 https://github.com/THU-luvision/OmniSeg3D/assets/37448328/f41a256a-e6dd-4f3e-9d59-2089406ac06d
@@ -79,16 +78,16 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
  	```
 
 ## Data Preparartion
-We support replica, colmap dataset now. You can specify your own dataloader as well.
-you should firstly run the sam model to get the hierarchical representation files.
+### Hierarchical Representation Generation
+Run the sam model to get the hierarchical representation files.
 ```bash
 python run_sam.py --ckpt_path {SAM_CKPT_PATH} --file_path {IMAGE_FOLDER} --gpu_id {GPU_ID}
 ```
-After running, you will get three folders "sam", "masks", "patches":
-* "sam": stores the hierarchical representation as ".npz" files
-* "masks" and "patches": used for visualization or masks quaility evaluation, which won't be used during training.
+After running, you will get three folders `sam`, `masks`, `patches`:
+* `sam`: stores the hierarchical representation as ".npz" files
+* `masks` and `patches`: used for visualization or masks quaility evaluation, not needed during training.
 
-Ideal "masks" should include object-level masks and "patches" should contain part-level masks. We basically use the default parameter setting for SAM, but you can tune the parameters for customized datasets.
+Ideal `masks` should include object-level masks and `patches` should contain part-level masks. We basically use the default parameter setting for SAM, but you can tune the parameters for customized datasets.
 
 ### Data Sample
 We provide some [data sample (replica_room_0, 360_counter, llff_flower)](https://drive.google.com/drive/folders/1e7eCume6solK8NuesWdFe9vabVmA9YYX?usp=sharing), you can download them for model trainning.

@@ -41,7 +41,7 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 * Python libraries
     * Install `pytorch`, `pytorch-lightning=1.9.3`, [`pytorch-scatter`](https://github.com/rusty1s/pytorch_scatter#installation)
 	```bash
-	conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch
+	conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorch
 	conda install pytorch-lightning=1.9.3
 	conda install pytorch-scatter -c pyg
 	```

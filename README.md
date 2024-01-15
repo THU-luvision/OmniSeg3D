@@ -120,7 +120,15 @@ NOTE: Folder "sam", "masks", and "patches" should be generated with run_sam.py
 
 We recommend a two-stage training strategy for stable convergence, which means we train for **color and density field** first and then for **semantic field**. 
 
-* Stage1: color and density field optimization
+* Before running: please specify the information in the config file (like `run_replica.sh`). More options can be found in `opt.py` and you can them adjusted in config file.
+```bash
+# --- Edit the config file scripts/run_replica.sh
+root_dir=/path/to/data/folder/of/the/scene
+exp_name=experiment_name
+dataset_name=dataset_type  # "colmap", "replica", and you can easily specify new dataset type
+```
+
+* Stage 1: color and density field optimization
 ```bash
 CUDA_VISIBLE_DEVICES=0 opt=train_rgb bash scripts/run_replica.sh
 ```
@@ -129,8 +137,6 @@ CUDA_VISIBLE_DEVICES=0 opt=train_rgb bash scripts/run_replica.sh
 ```bash
 CUDA_VISIBLE_DEVICES=0 opt=train_sem bash scripts/run_replica.sh
 ```
-
-More options about training can be adjusted in `run_replica.sh`.
 
 
 

@@ -29,29 +29,54 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 
 ### Software
 
-* Clone this repo by `https://github.com/THU-luvision/OmniSeg3D.git`
-* Python>=3.8 (installation via [anaconda](https://www.anaconda.com/distribution/) is recommended, use `conda create -n omniseg3d python=3.8` to create a conda environment and activate it by `conda activate omniseg3d`)
+* Clone this repo by:
+	```bash
+	git clone https://github.com/THU-luvision/OmniSeg3D.git
+ 	```
+* Create a conda environment and activate it, Python>=3.8 (installation via [anaconda](https://www.anaconda.com/distribution/) is recommended.
+	```bash
+	conda create -n omniseg3d python=3.8
+	conda activate omniseg3d
+	```
 * Python libraries
-    * Install `pytorch` by `conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch`, `conda install pytorch-lightning`.
-    * Install `torch-scatter` following their [instruction](https://github.com/rusty1s/pytorch_scatter#installation), `conda install pytorch-scatter -c pyg`
-    * Install core requirements by `pip install -r requirements.txt`
-    * Install `tinycudann` following their [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
-      ```bash
-      git clone --recursive https://github.com/nvlabs/tiny-cuda-nn
-      cd tiny-cuda-nn/bindings/torch
-      python setup.py install
-      ```
-    * Install `apex` following their [instruction](https://github.com/NVIDIA/apex#linux), (be sure to `pip install packaging` to prevent [possible issues](https://github.com/NVIDIA/apex/issues/1679))
+    * Install `pytorch`, `pytorch-lightning=1.9.3`, [`pytorch-scatter`](https://github.com/rusty1s/pytorch_scatter#installation)
+	```bash
+	conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch
+	conda install pytorch-lightning=1.9.3
+	conda install pytorch-scatter -c pyg
+	```
+    * Install `tinycudann` following the official [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
+	```bash
+	git clone --recursive https://github.com/nvlabs/tiny-cuda-nn
+	cd tiny-cuda-nn/bindings/torch
+	python setup.py install
+	```
+    * Install `apex` following the official [instruction](https://github.com/NVIDIA/apex#linux). NOTE: [Error](https://github.com/NVIDIA/apex/issues/1735) may occur due to the recent official commit, try `git checkout 2386a912164b0c5cfcd8be7a2b890fbac5607c82` to resolve the problem.
+	```bash
+	git clone https://github.com/NVIDIA/apex
+	cd apex
+	# if pip >= 23.1 (ref: https://pip.pypa.io/en/stable/news/#v23-1) which supports multiple `--config-settings` with the same key... 
+	pip install -v --disable-pip-version-check --no-cache-dir --no-build-isolation --config-settings "--build-option=--cpp_ext" --config-settings "--build-option=--cuda_ext" ./
+	# otherwise
+	pip install -v --disable-pip-version-check --no-cache-dir --no-build-isolation --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+	```
     * Install SAM for segmentation 
-      ```bash
-      mkdir dependencies; cd dependencies 
-      mkdir sam_ckpt; cd sam_ckpt
-      wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
-      git clone https://github.com/facebookresearch/segment-anything.git
-      cd segment-anything; pip install -e .
-      ```
+	```bash
+	git clone https://github.com/facebookresearch/segment-anything.git
+	cd segment-anything
+ 	pip install -e .
+	mkdir sam_ckpt; cd sam_ckpt
+	wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+	```
+    * Install core requirements by:
+	```bash
+	pip install -r requirements.txt`
+	```
 
-* Cuda extension: Upgrade `pip` to >= 22.1 and run `pip install models/csrc/` (please run this each time you `pull` the code)
+* Cuda extension: Upgrade `pip` to >= 22.1 and run:
+	```bash
+	pip install models/csrc/
+ 	```
 
 ## Data Preparartion
 We support replica, colmap dataset now. You can specify your own dataloader as well.

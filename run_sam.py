@@ -15,31 +15,30 @@ def get_opts():
     parser = argparse.ArgumentParser()
 
     # dataset parameters
-    parser.add_argument('--ckpt_path', type=str, required=True, default="/data/haiyang/projects/segment-anything/ckpts/sam_vit_h_4b8939.pth",
+    parser.add_argument('--ckpt_path', type=str, default="/data/haiyang/projects/segment-anything/ckpts/sam_vit_h_4b8939.pth",
                         help='SAM checkpoint file')
-    parser.add_argument('--file_path', type=str, default="/data/haiyang/projects/ngp_sam/data/replica/room_0/results/rgb",
+    parser.add_argument('--file_path', type=str, default="/data/haiyang/projects/OmniSeg3D_release/data/llff_flower/images_4",
                         help='RGB image folder path')
-    parser.add_argument('--gpu_id', type=int, default=0,
-                        help='choose GPU ID')
+    
+    return parser.parse_args()
 
 
 @torch.inference_mode()
-def process_images(ckpt_path: str, files: list, rank: int):
-    torch.cuda.set_device(rank)
+def process_images(ckpt_path: str, files: list):
     sam_generator = SamAutomaticMaskGenerator(
-        build_sam_vit_h(ckpt_path).requires_grad_(False).to(rank),
+        build_sam_vit_h(ckpt_path).requires_grad_(False).cuda(),
         points_per_side=32,
         points_per_batch=64,      # 256
         pred_iou_thresh=.88,
-        stability_score_thresh=.95,  # .9 for LLFF
+        stability_score_thresh=.9,  # default: 0.95, LLFF: 0.9
         stability_score_offset=1,
         box_nms_thresh=.7,
-        crop_n_layers=0,  # 1 for LLFF
+        crop_n_layers=1,  # default: 0, LLFF: 1
         crop_nms_thresh=.7,
         crop_n_points_downscale_factor=1,
         min_mask_region_area=128
     )
-    for file in tqdm(files, leave=False, position=rank):
+    for file in tqdm(files, leave=False):
         prefixes = ('masks', 'patches', 'sam')
         paths = [join(dirname(dirname(file)), p, basename(file)) for p in prefixes]
         [makedirs(dirname(p), exist_ok=True) for p in paths]
@@ -76,8 +75,7 @@ if __name__ == '__main__':
     
     ckpt_path = hparams.ckpt_path
     file_path = hparams.file_path
-    gpu_id = hparams.gpu_id
     
     files = sorted(glob(join(file_path, "*.*")))
 
-    process_images(ckpt_path, files, gpu_id)
+    process_images(ckpt_path, files)

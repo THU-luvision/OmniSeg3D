@@ -40,7 +40,7 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
       cd tiny-cuda-nn/bindings/torch
       python setup.py install
       ```
-    * Install `apex` following their [instruction](https://github.com/NVIDIA/apex#linux)
+    * Install `apex` following their [instruction](https://github.com/NVIDIA/apex#linux), (be sure to `pip install packaging` to prevent [possible issues](https://github.com/NVIDIA/apex/issues/1679))
     * Install core requirements by `pip install -r requirements.txt`
     * Install SAM for segmentation 
       ```bash

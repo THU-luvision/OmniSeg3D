@@ -35,17 +35,21 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
     * Install pytorch by `conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch`
     * Install `torch-scatter` following their [instruction](https://github.com/rusty1s/pytorch_scatter#installation), `conda install pytorch-scatter -c pyg`
     * Install `tinycudann` following their [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
+      ```bash
+      git clone --recursive https://github.com/nvlabs/tiny-cuda-nn
+      cd tiny-cuda-nn/bindings/torch
+      python setup.py install
+      ```
     * Install `apex` following their [instruction](https://github.com/NVIDIA/apex#linux)
     * Install core requirements by `pip install -r requirements.txt`
     * Install SAM for segmentation 
-```bash
-# Installing SAM
-mkdir dependencies; cd dependencies 
-mkdir sam_ckpt; cd sam_ckpt
-wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
-git clone git@github.com:facebookresearch/segment-anything.git 
-cd segment-anything; pip install -e .
-```
+      ```bash
+      mkdir dependencies; cd dependencies 
+      mkdir sam_ckpt; cd sam_ckpt
+      wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+      git clone https://github.com/facebookresearch/segment-anything.git
+      cd segment-anything; pip install -e .
+      ```
 
 * Cuda extension: Upgrade `pip` to >= 22.1 and run `pip install models/csrc/` (please run this each time you `pull` the code)
 

@@ -20,7 +20,7 @@ For more demos, please visit our project page: [OmniSeg3D](https://oceanying.git
 
 ## Installation
 
-NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea123/ngp_pl) project and the requirements are the same as ngp_pl basically.
+NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea123/ngp_pl) project and the requirements are the same as ngp_pl except for the `SAM` and a customized `CUDA extension`.
 
 ### Hardware
 

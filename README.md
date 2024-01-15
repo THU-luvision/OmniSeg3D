@@ -32,8 +32,9 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
 * Clone this repo by `https://github.com/THU-luvision/OmniSeg3D.git`
 * Python>=3.8 (installation via [anaconda](https://www.anaconda.com/distribution/) is recommended, use `conda create -n omniseg3d python=3.8` to create a conda environment and activate it by `conda activate omniseg3d`)
 * Python libraries
-    * Install pytorch by `conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch`
+    * Install `pytorch` by `conda install pytorch==1.11.0 torchvision==0.12.0 -c pytorch`, `conda install pytorch-lightning`.
     * Install `torch-scatter` following their [instruction](https://github.com/rusty1s/pytorch_scatter#installation), `conda install pytorch-scatter -c pyg`
+    * Install core requirements by `pip install -r requirements.txt`
     * Install `tinycudann` following their [instruction](https://github.com/NVlabs/tiny-cuda-nn#pytorch-extension) (pytorch extension). NOTE: If you want to install it on server with local installed CUDA, you need to specify the CUDA path as `cmake . -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc` instead of 'cmake . -B build'.
       ```bash
       git clone --recursive https://github.com/nvlabs/tiny-cuda-nn
@@ -41,7 +42,6 @@ NOTE: Our project is implemented based on the [ngp_pl](https://github.com/kwea12
       python setup.py install
       ```
     * Install `apex` following their [instruction](https://github.com/NVIDIA/apex#linux), (be sure to `pip install packaging` to prevent [possible issues](https://github.com/NVIDIA/apex/issues/1679))
-    * Install core requirements by `pip install -r requirements.txt`
     * Install SAM for segmentation 
       ```bash
       mkdir dependencies; cd dependencies 

@@ -1,4 +1,9 @@
-
+einops
+kornia
+matplotlib
+opencv-python
+lpips
+tensorboardX
 imageio
 imageio-ffmpeg
 jupyter
@@ -6,4 +11,3 @@ scipy
 pymcubes
 trimesh
 dearpygui
-tqdm

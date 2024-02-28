@@ -1,4 +1,4 @@
-# OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning
+# OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning (CVPR2024)
 ### [Project Page](https://oceanying.github.io/OmniSeg3D/) | [Arxiv Paper](https://arxiv.org/abs/2311.11666)
 
 [OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning](https://arxiv.org/abs/2311.11666)  

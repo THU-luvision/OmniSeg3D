@@ -16,7 +16,7 @@ For more demos, please visit our project page: [OmniSeg3D](https://oceanying.git
 
 ## Update
 * **2024/01/14**: We release the original version of OmniSeg3D. Try and play with it now!
-
+* **2024/03/26**: We release [OmniSeg3D-GS](https://github.com/OceanYing/OmniSeg3D-GS) as an adaptation of 3D Gaussian Splatting, check out it now!
 
 ## Installation
 

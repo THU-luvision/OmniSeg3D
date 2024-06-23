@@ -59,7 +59,7 @@ def process_images(ckpt_path: str, files: list):
         # --- Identify and visualize disjoint patches --- #
         unique, indices = masks.flatten(1).unique(return_inverse=True, dim=1)
         (cm := torch.randint(192, (unique.size(1), 3), dtype=torch.uint8))[0] = 0
-        imwrite(paths[1], cm[indices].view_as(image).add_(image).cpu().numpy())
+        imwrite(paths[1], cm[indices.cpu()].view_as(image).add_(image).cpu().numpy())
         
         # --- Calculate patch correlation --- #
         unique, indices = unique.half(), indices.view_as(mask).cpu().numpy()

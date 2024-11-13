@@ -1,7 +1,7 @@
 # OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning (CVPR2024)
-### [Project Page](https://oceanying.github.io/OmniSeg3D/) | [Arxiv Paper](https://arxiv.org/abs/2311.11666)
+### [Project Page](https://oceanying.github.io/OmniSeg3D/) | [CVPR 2024 Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Ying_OmniSeg3D_Omniversal_3D_Segmentation_via_Hierarchical_Contrastive_Learning_CVPR_2024_paper.pdf)
 
-[OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning](https://arxiv.org/abs/2311.11666)  
+[OmniSeg3D: Omniversal 3D Segmentation via Hierarchical Contrastive Learning](https://openaccess.thecvf.com/content/CVPR2024/papers/Ying_OmniSeg3D_Omniversal_3D_Segmentation_via_Hierarchical_Contrastive_Learning_CVPR_2024_paper.pdf)  
 [Haiyang Ying](https://oceanying.github.io/)<sup>1</sup>, Yixuan Yin<sup>1</sup>, Jinzhi Zhang<sup>1</sup>, Fan Wang<sup>2</sup>, Tao Yu<sup>1</sup>, Ruqi Huang<sup>1</sup>, [Lu Fang](http://www.luvision.net/)<sup>1</sup>   
 <sup>1</sup>Tsinghua Univeristy &emsp; <sup>2</sup>Alibaba Group.  
 
